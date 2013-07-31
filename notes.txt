@@ -1,0 +1,7 @@
+Development Notes:
+
+   Text format for interspersing graphics and bold text through out a card.
+   
+      EXAMPLE: [keyword:cont] [icon:black] On your [keyword:main-phase], discard a card or this card loses a [icon:cpu]+1 counter.  If you discard a card this card gains a [icon:cpu]+1 counter up to a maximum of 6 counters.
+      
+      FORMAT: [drawable-class:drawable-resource]

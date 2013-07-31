@@ -1,0 +1,119 @@
+{
+    "name": "cpu-goddess",
+    "width": 327,
+    "height": 477,
+    "elements":
+    [
+        {
+            "name": "textBox",
+            "type": "text-box",
+            "x": 10,
+            "y": 298,
+            "width": 305,
+            "height": 125,
+            "margin": 10,
+            "font": {
+                "family": "Optima-Thin", 
+                "size": 12, 
+                "weight": "normal",
+                "color": "black"
+            },
+            "transparency": 0.75,
+            "layer": "layers/hacker/text-box.png",
+            "mappings": {
+                "effects": {
+                },
+                "flavorText": {
+                }
+            }
+        },{
+            "name": "nameBox",
+            "type": "text-box",
+            "x": 50,
+            "y": 429,
+            "width": 240,
+            "height": 30,
+            "margin": 0,
+            "font": {
+                "family": "Optima-Thin", 
+                "size": 20, 
+                "weight": "bold",
+                "color": "black"
+            },
+            "transparency": 0.75,
+            "layer": "layers/hacker/name-box.png",
+            "mappings": {
+                "cardName": {
+                }
+            }
+        },{
+            "name": "alignment",
+            "type": "text-box",
+            "x": 12,
+            "y": 275,
+            "width": 300,
+            "height": 125,
+            "margin": 10,
+            "font": {
+                "family": "Optima-Thin", 
+                "size": 10, 
+                "weight": "normal",
+                "color": "black"
+            },
+            "transparency": 0.75,
+            "layer": "layers/hacker/alignment.png"
+        },{
+            "name": "architecture",
+            "type": "text-box",
+            "x": 0,
+            "y": 40,
+            "width": 30,
+            "height": 230,
+            "margin": 0,
+            "font": {
+                "family": "monospaced", 
+                "size": 8, 
+                "weight": "bold",
+                "color": "black"
+            },
+            "transparency": 0.50,
+            "layer": "layers/hacker/compatibility.png",
+            "mappings": {
+                "processor": {
+                    "type": "image"
+                }
+            }
+        },{
+            "name": "cpuData",
+            "type": "table",
+            "x": 200,
+            "y": 180,
+            "width": 35,
+            "height": 70,
+            "margin": 10,
+            "columns": 2,
+            "font": {
+                "family": "monospaced", 
+                "size": 15, 
+                "weight": "bold",
+                "color": "black"
+            },
+            "transparency": 0.50,
+            "layer": "layers/hacker/cpu-data.png",
+            "mappings": {
+                "cpu": {
+                    "label": "CPU"
+                },
+                "hdd": {
+                    "label": "HDD"
+                },
+                "ram": {
+                    "label": "RAM"
+                },
+                "slt": {
+                    "label": "SLT"
+                }
+            }
+        }
+    ]
+}

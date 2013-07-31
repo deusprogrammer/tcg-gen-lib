@@ -1,0 +1,141 @@
+{
+    "name": "vanguard",
+    "width": 327,
+    "height": 477,
+    "elements":
+    [
+        {
+            "name": "effect-box",
+            "type": "text-box",
+            "x": 10,
+            "y": 278,
+            "margin": 10,
+            "font": {
+                "family": "Optima-Thin", 
+                "size": 12, 
+                "weight": "normal",
+                "color": "black"
+            },
+            "transparency": 0.75,
+            "layer": "layers/vanguard/effect-box.png",
+            "mappings": {
+                "effects": {
+                }
+            }
+        },{
+            "name": "bottom",
+            "type": "layer",
+            "x": 0,
+            "y": 400,
+            "transparency": 1.0,
+            "layer": "layers/vanguard/bottom.png"
+        },{
+            "name": "name-box",
+            "type": "text-box",
+            "x": 90,
+            "y": 399,
+            "width": 200,
+            "height": 20,
+            "margin": 0,
+            "font": {
+                "family": "Optima-Thin", 
+                "size": 18,
+                "weight": "bold",
+                "color": "black"
+            },
+            "transparency": 1.0,
+            "mappings": {
+                "cardName": {
+                }
+            }
+        },{
+            "name": "grade0",
+            "type": "layer",
+            "x": 5,
+            "y": 5,
+            "transparency": 1.0,
+            "condition": "grade == 0",
+            "layer": "layers/vanguard/grade0.png"
+        },{
+            "name": "grade1",
+            "type": "layer",
+            "x": 5,
+            "y": 5,
+            "transparency": 1.0,
+            "condition": "grade == 1",
+            "layer": "layers/vanguard/grade1.png"
+        },{
+            "name": "grade2",
+            "type": "layer",
+            "x": 5,
+            "y": 5,
+            "transparency": 1.0,
+            "condition": "grade == 2",
+            "layer": "layers/vanguard/grade2.png"
+        },{
+            "name": "grade3",
+            "type": "layer",
+            "x": 5,
+            "y": 5,
+            "transparency": 1.0,
+            "condition": "grade == 3",
+            "layer": "layers/vanguard/grade3.png"
+        },{
+            "name": "trigger-critical",
+            "type": "layer",
+            "x": 264,
+            "y": 7,
+            "transparency": 1.0,
+            "condition": "trigger == critical",
+            "layer": "layers/vanguard/critical-trigger.png"
+        },{
+            "name": "trigger-heal",
+            "type": "layer",
+            "x": 264,
+            "y": 7,
+            "transparency": 1.0,
+            "condition": "trigger == heal",
+            "layer": "layers/vanguard/heal-trigger.png"
+        },{
+            "name": "trigger-draw",
+            "type": "layer",
+            "x": 264,
+            "y": 7,
+            "transparency": 1.0,
+            "condition": "trigger == draw",
+            "layer": "layers/vanguard/draw-trigger.png"
+        },{
+            "name": "trigger-stand",
+            "type": "layer",
+            "x": 264,
+            "y": 7,
+            "transparency": 1.0,
+            "condition": "trigger == stand",
+            "layer": "layers/vanguard/stand-trigger.png"
+        },{
+            "name": "shield-5000",
+            "type": "layer",
+            "x": 0,
+            "y": 110,
+            "transparency": 1.0,
+            "condition": "shield == 5000",
+            "layer": "layers/vanguard/shield-5000.png"
+        },{
+            "name": "shield-10000",
+            "type": "layer",
+            "x": 0,
+            "y": 110,
+            "transparency": 1.0,
+            "condition": "shield == 10000",
+            "layer": "layers/vanguard/shield-10000.png"
+        },{
+            "name": "shield-0",
+            "type": "layer",
+            "x": 0,
+            "y": 110,
+            "transparency": 1.0,
+            "condition": "shield == 0",
+            "layer": "layers/vanguard/shield-0.png"
+        }
+    ]
+}
