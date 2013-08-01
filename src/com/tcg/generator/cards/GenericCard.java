@@ -14,7 +14,10 @@ import com.tcg.generator.util.ImageWriter;
 import com.text.formatted.elements.MixedMediaText;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
@@ -104,8 +107,22 @@ public class GenericCard {
         this.cardData = cardData;
         return this;
     }
-    
+
     public void draw(String outputDirectory) {
+        String name = (String)((cardData.get("cardName") != null ? cardData.get("cardName") : cardName));
+        draw(new File(outputDirectory + name + ".png"));
+    }
+    
+    public void draw(File outputFile) {
+        try {
+            draw(new FileOutputStream(outputFile));
+        } catch (FileNotFoundException ex) {
+            System.out.println("Unable to find file!");
+            return;
+        }
+    }
+    
+    public void draw(OutputStream outputStream) {
         BufferedImage bi = new BufferedImage(layout.getWidth(), layout.getHeight(), BufferedImage.TYPE_INT_ARGB);
         ImageWriter.drawLayer(artwork, bi);
         
@@ -205,7 +222,7 @@ public class GenericCard {
         }
         
         try {
-            ImageIO.write(bi, "png", new File(outputDirectory + cardName + ".png"));
+            ImageIO.write(bi, "png", outputStream);
         } catch (IOException ex) {
             System.out.println("Unable to write image!");
         }
