@@ -7,7 +7,6 @@ package com.tcg.generator.cards;
 import com.tcg.generator.cards.reflect.Card;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tcg.generator.config.ConfigHolder;
 import com.tcg.generator.layouts.CardFont;
 import com.tcg.generator.layouts.CardLayout;
 import com.tcg.generator.layouts.ElementLayout;
@@ -325,7 +324,6 @@ public class GenericCard {
         
         while((element = text.next()) != null) {
             if (element instanceof ImageInsert) {
-                System.out.println("ELEMENT: " + element.getText());
                 iconWidth += cardLayout.getResource(element.getText()).getWidth();
             } else if (element instanceof BoldTextInsert) {
                 formattedTextWidth += g.getFontMetrics(new Font(elementLayout.getCardFont().getFamily(), Font.BOLD, elementLayout.getCardFont().getSize())).getStringBounds(" " + element.getText(), g).getBounds().width;

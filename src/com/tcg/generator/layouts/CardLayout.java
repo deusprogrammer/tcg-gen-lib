@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class CardLayout {
     protected ArrayList<ElementLayout> elements;
-    protected Map<String, Resource>resources;
+    protected ArrayList<Resource>resources;
     protected String name;
     protected Integer width, height;
     protected ObjectMapper mapper = new ObjectMapper();
@@ -25,7 +25,7 @@ public class CardLayout {
     public CardLayout(
             @JsonProperty("name")      String name,
             @JsonProperty("elements")  ArrayList<ElementLayout> elements,
-            @JsonProperty("resources") Map<String, Resource>resources,
+            @JsonProperty("resources") ArrayList<Resource> resources,
             @JsonProperty("width")     Integer width,
             @JsonProperty("height")    Integer height
             ) {
@@ -82,9 +82,9 @@ public class CardLayout {
     
     public Integer getResourceMaxHeight() {
         Integer max = 0;
-        for (Map.Entry<String, Resource> entry : resources.entrySet()) {
-            if (max < entry.getValue().getHeight()) {
-                max = entry.getValue().getHeight();
+        for (Resource resource : resources) {
+            if (max < resource.getHeight()) {
+                max = resource.getHeight();
             }
         }
         
@@ -92,7 +92,12 @@ public class CardLayout {
     }
     
     public Resource getResource(String resourceName) {
-        return resources.get(resourceName);
+        for (Resource resource : resources) {
+            if (resource.getResourceName().equals(resourceName)) {
+                return resource;
+            }
+        }
+        return null;
     }
     
     @Override

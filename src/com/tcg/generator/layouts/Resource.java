@@ -17,13 +17,15 @@ import javax.imageio.ImageIO;
  * @author mmain
  */
 public class Resource {
+    protected String resourceName;
     protected String resourcePath;
     protected BufferedImage resourceImage;
     protected Integer width, height;
     
     @JsonCreator
-    public Resource(@JsonProperty("file") String resourcePath) {
+    public Resource(@JsonProperty("file") String resourcePath, @JsonProperty("name") String resourceName) {
         this.resourcePath = resourcePath;
+        this.resourceName = resourceName;
         String filePath = ConfigHolder.getConfig("rootDirectory") + resourcePath;
         try {
             this.resourceImage = ImageIO.read(new File(filePath));
@@ -35,6 +37,10 @@ public class Resource {
     
     public BufferedImage getImage() {
         return resourceImage;
+    }
+    
+    public String getResourceName() {
+        return resourceName;
     }
     
     public int getWidth() {
