@@ -7,6 +7,7 @@ package com.tcg.generator.cards;
 import com.tcg.generator.cards.reflect.Card;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tcg.generator.config.ConfigHolder;
 import com.tcg.generator.layouts.CardFont;
 import com.tcg.generator.layouts.CardLayout;
 import com.tcg.generator.layouts.ElementLayout;

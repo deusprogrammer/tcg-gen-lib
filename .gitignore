@@ -6,3 +6,6 @@ layouts/
 resources/
 templates/
 build/
+*.png
+*.jpg
+*.gif

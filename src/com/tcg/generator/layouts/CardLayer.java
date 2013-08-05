@@ -6,6 +6,7 @@ package com.tcg.generator.layouts;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tcg.generator.config.ConfigHolder;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -42,7 +43,7 @@ public class CardLayer {
         
         if (file != null) {
             try {
-                this.image = ImageIO.read(new File(file));
+                this.image = ImageIO.read(new File(ConfigHolder.getConfig("rootDirectory") + file));
             } catch (IOException ex) {
                 System.out.println("Unable to open layer!");
             }
