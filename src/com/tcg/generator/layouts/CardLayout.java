@@ -7,13 +7,8 @@ package com.tcg.generator.layouts;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tcg.generator.cards.GenericCard;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 
 /**
  *
@@ -21,6 +16,7 @@ import java.util.logging.Logger;
  */
 public class CardLayout {
     protected ArrayList<ElementLayout> elements;
+    protected Map<String, Resource>resources;
     protected String name;
     protected Integer width, height;
     protected Integer nColumns;
@@ -28,10 +24,11 @@ public class CardLayout {
     
     @JsonCreator
     public CardLayout(
-            @JsonProperty("name")     String name,
-            @JsonProperty("elements") ArrayList<ElementLayout> elements,
-            @JsonProperty("width")    Integer width,
-            @JsonProperty("height")   Integer height
+            @JsonProperty("name")      String name,
+            @JsonProperty("elements")  ArrayList<ElementLayout> elements,
+            @JsonProperty("resources") Map<String, Resource>resources,
+            @JsonProperty("width")     Integer width,
+            @JsonProperty("height")    Integer height
             ) {
         this.name = name;
         this.elements = elements;
@@ -81,6 +78,21 @@ public class CardLayout {
     
     public Integer getHeight() {
         return height;
+    }
+    
+    public Integer getResourceMaxHeight() {
+        Integer max = 0;
+        for (Map.Entry<String, Resource> entry : resources.entrySet()) {
+            if (max < entry.getValue().getHeight()) {
+                max = entry.getValue().getHeight();
+            }
+        }
+        
+        return max;
+    }
+    
+    public Resource getResource(String resourceName) {
+        return resources.get(resourceName);
     }
     
     public String toString() {

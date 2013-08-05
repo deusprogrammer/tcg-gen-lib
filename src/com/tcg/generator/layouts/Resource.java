@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.tcg.generator.resources;
+package com.tcg.generator.layouts;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tcg.generator.config.ConfigHolder;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +24,12 @@ public class Resource {
     @JsonCreator
     public Resource(@JsonProperty("file") String resourcePath) {
         this.resourcePath = resourcePath;
+        String filePath = ConfigHolder.getConfig("rootDirectory") + resourcePath;
         try {
-            this.resourceImage = ImageIO.read(new File(resourcePath));
-            System.out.println("Successfully opened: " + resourcePath);
+            this.resourceImage = ImageIO.read(new File(filePath));
+            System.out.println("Successfully opened: " + filePath);
         } catch (IOException ex) {
-            System.out.println("Failed to open:      " + resourcePath);
+            System.out.println("Failed to open:      " + filePath);
         }
     }
     

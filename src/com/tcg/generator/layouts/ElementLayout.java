@@ -9,10 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedHashMap;
-import javax.imageio.ImageIO;
+
+import com.tcg.generator.config.ConfigHolder;
 
 /**
  *
@@ -20,12 +19,13 @@ import javax.imageio.ImageIO;
  */
 public class ElementLayout {
     private String name, type;
+    private String inherits;
     private Integer x, y;
     private Integer width, height;
     private Integer margin;
     private CardFont font;
     private Double transparency;
-    private BufferedImage layer;
+    private CardLayer layer;
     private Integer columns;
     private Condition condition;
     private LinkedHashMap<String, ElementMapping> mappings;
@@ -34,6 +34,7 @@ public class ElementLayout {
     public ElementLayout(
             @JsonProperty("name")         String name,
             @JsonProperty("type")         String type,
+            @JsonProperty("inherits")     String inherits,
             @JsonProperty("x")            Integer x,
             @JsonProperty("y")            Integer y,
             @JsonProperty("width")        Integer width,
@@ -48,6 +49,11 @@ public class ElementLayout {
             ) {
         this.name = name;
         this.type = type;
+        this.inherits = inherits;
+        
+        if (this.inherits != null) {
+            
+        }
         this.x = x;
         this.y = y;
         this.width = width;
@@ -57,21 +63,17 @@ public class ElementLayout {
         this.font = font;
         this.transparency = transparency;
         this.mappings = mappings;
-        try {
-            if (layer != null) {
-                this.layer = ImageIO.read(new File(layer));
-                if (this.height == null) {
-                    this.height = this.layer.getHeight();
-                }
-                if (this.width == null) {
-                    this.width = this.layer.getWidth();
-                }
-                System.out.println("Successfully opened: " + layer);
+
+        String filePath = ConfigHolder.getConfig("rootDirectory") + layer;
+        if (layer != null) {
+            if (this.height == null) {
+                this.height = this.layer.getHeight();
             }
-        } catch (IOException ex) {
-            System.out.println("Failed to open:      " + layer);
+            if (this.width == null) {
+                this.width = this.layer.getWidth();
+            }
+            System.out.println("Successfully opened: " + filePath);
         }
-        
         if (condition != null) {
             this.condition = new Condition(condition);
         }
@@ -161,7 +163,7 @@ public class ElementLayout {
     }
     
     public BufferedImage getLayer() {
-        return layer;
+        return layer.getImage();
     }
     
     public LinkedHashMap<String, ElementMapping> getMappings() {
