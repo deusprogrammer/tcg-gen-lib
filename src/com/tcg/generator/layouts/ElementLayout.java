@@ -43,7 +43,7 @@ public class ElementLayout {
             @JsonProperty("columns")      Integer columns,
             @JsonProperty("transparency") Double transparency,
             @JsonProperty("font")         CardFont font,
-            @JsonProperty("layer")        String layer,
+            @JsonProperty("layer")        CardLayer layer,
             @JsonProperty("mappings")     LinkedHashMap<String, ElementMapping> mappings,
             @JsonProperty("condition")    String condition
             ) {
@@ -54,6 +54,7 @@ public class ElementLayout {
         if (this.inherits != null) {
             
         }
+        
         this.x = x;
         this.y = y;
         this.width = width;
@@ -63,8 +64,8 @@ public class ElementLayout {
         this.font = font;
         this.transparency = transparency;
         this.mappings = mappings;
+        this.layer = layer;
 
-        String filePath = ConfigHolder.getConfig("rootDirectory") + layer;
         if (layer != null) {
             if (this.height == null) {
                 this.height = this.layer.getHeight();
@@ -72,7 +73,6 @@ public class ElementLayout {
             if (this.width == null) {
                 this.width = this.layer.getWidth();
             }
-            System.out.println("Successfully opened: " + filePath);
         }
         if (condition != null) {
             this.condition = new Condition(condition);
@@ -163,6 +163,9 @@ public class ElementLayout {
     }
     
     public BufferedImage getLayer() {
+        if (layer == null) {
+            return null;
+        }
         return layer.getImage();
     }
     

@@ -55,7 +55,7 @@ public class GenericCard {
         
         setCardName(name);
         setLayout(layout);
-        setArtwork(artworkFile);
+        setArtwork(new File(artworkFile));
     }
     
     public GenericCard(String name, String artworkFile, String layoutFile, LinkedHashMap<String, Object> cardData) {
@@ -63,7 +63,7 @@ public class GenericCard {
         
         setCardName(name);
         setLayout(layoutFile);
-        setArtwork(artworkFile);
+        setArtwork(new File(artworkFile));
     }
     
     public final GenericCard setCardName(String cardName) {
@@ -96,9 +96,9 @@ public class GenericCard {
         return this;
     }
     
-    public final GenericCard setArtwork(String artworkFile) {
+    public final GenericCard setArtwork(File artworkFile) {
         try {
-            this.artwork = ImageIO.read(new File(artworkFile));
+            this.artwork = ImageIO.read(artworkFile);
            System.out.println("Successfully opened: " + artworkFile);
         } catch (IOException ex) {
             System.out.println("Failed to open:      " + artworkFile);
@@ -324,6 +324,7 @@ public class GenericCard {
         
         while((element = text.next()) != null) {
             if (element instanceof ImageInsert) {
+                System.out.println("ELEMENT: " + element.getText());
                 iconWidth += cardLayout.getResource(element.getText()).getWidth();
             } else if (element instanceof BoldTextInsert) {
                 formattedTextWidth += g.getFontMetrics(new Font(elementLayout.getCardFont().getFamily(), Font.BOLD, elementLayout.getCardFont().getSize())).getStringBounds(" " + element.getText(), g).getBounds().width;

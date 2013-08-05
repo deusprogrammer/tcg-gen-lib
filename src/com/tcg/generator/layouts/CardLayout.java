@@ -19,7 +19,6 @@ public class CardLayout {
     protected Map<String, Resource>resources;
     protected String name;
     protected Integer width, height;
-    protected Integer nColumns;
     protected ObjectMapper mapper = new ObjectMapper();
     
     @JsonCreator
@@ -34,6 +33,7 @@ public class CardLayout {
         this.elements = elements;
         this.width = width;
         this.height = height;
+        this.resources = resources;
     }
     
     public String getName() {

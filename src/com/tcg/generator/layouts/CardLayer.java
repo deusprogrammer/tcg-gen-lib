@@ -7,6 +7,7 @@ package com.tcg.generator.layouts;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -52,9 +53,9 @@ public class CardLayer {
             this.height = height;
             this.image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
             
-            Graphics2D graphics = this.image.createGraphics();
+            Graphics graphics = this.image.getGraphics();
             graphics.setColor(new Color(r, g, b));
-            graphics.draw(new Rectangle(this.width, this.height));
+            graphics.fillRect(0, 0, this.width, this.height);
         }
     }
     
