@@ -95,6 +95,7 @@ public class CardLayout {
         return resources.get(resourceName);
     }
     
+    @Override
     public String toString() {
         String s = "";
         

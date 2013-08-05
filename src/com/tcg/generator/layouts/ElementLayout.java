@@ -11,8 +11,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 
-import com.tcg.generator.config.ConfigHolder;
-
 /**
  *
  * @author mmain
