@@ -6,6 +6,7 @@ package com.tcg.generator.cards.hackertcg;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcg.generator.layouts.CardLayout;
+import java.io.File;
 
 /**
  *
@@ -32,7 +33,7 @@ public class CPUGoddessCard extends HackerTcgCard {
         this.processor = processor;
         
         setLayout(layout);
-        setArtwork(artworkFile);
+        setArtwork(new File(artworkFile));
     }
     
     public CPUGoddessCard(String name, Integer cpu, Integer ram, Integer hdd, Integer slt, ProcessorType processor, String artworkFile, String layoutFile) {
@@ -44,7 +45,7 @@ public class CPUGoddessCard extends HackerTcgCard {
         this.processor = processor;
         
         setLayout(layoutFile);
-        setArtwork(artworkFile);
+        setArtwork(new File(artworkFile));
     }
     
     public CPUGoddessCard setCpu(Integer cpu) {

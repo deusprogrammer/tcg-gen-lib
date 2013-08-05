@@ -7,13 +7,8 @@ package com.tcg.generator.layouts;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tcg.generator.cards.GenericCard;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 
 /**
  *
@@ -21,22 +16,24 @@ import java.util.logging.Logger;
  */
 public class CardLayout {
     protected ArrayList<ElementLayout> elements;
+    protected ArrayList<Resource>resources;
     protected String name;
     protected Integer width, height;
-    protected Integer nColumns;
     protected ObjectMapper mapper = new ObjectMapper();
     
     @JsonCreator
     public CardLayout(
-            @JsonProperty("name")     String name,
-            @JsonProperty("elements") ArrayList<ElementLayout> elements,
-            @JsonProperty("width")    Integer width,
-            @JsonProperty("height")   Integer height
+            @JsonProperty("name")      String name,
+            @JsonProperty("elements")  ArrayList<ElementLayout> elements,
+            @JsonProperty("resources") ArrayList<Resource> resources,
+            @JsonProperty("width")     Integer width,
+            @JsonProperty("height")    Integer height
             ) {
         this.name = name;
         this.elements = elements;
         this.width = width;
         this.height = height;
+        this.resources = resources;
     }
     
     public String getName() {
@@ -83,6 +80,27 @@ public class CardLayout {
         return height;
     }
     
+    public Integer getResourceMaxHeight() {
+        Integer max = 0;
+        for (Resource resource : resources) {
+            if (max < resource.getHeight()) {
+                max = resource.getHeight();
+            }
+        }
+        
+        return max;
+    }
+    
+    public Resource getResource(String resourceName) {
+        for (Resource resource : resources) {
+            if (resource.getResourceName().equals(resourceName)) {
+                return resource;
+            }
+        }
+        return null;
+    }
+    
+    @Override
     public String toString() {
         String s = "";
         

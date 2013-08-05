@@ -1,0 +1,11 @@
+dist/
+art/
+cards/
+layers/
+layouts/
+resources/
+templates/
+build/
+*.png
+*.jpg
+*.gif

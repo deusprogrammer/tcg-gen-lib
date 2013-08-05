@@ -7,7 +7,6 @@ package com.tcg.generator.cards.reflect;
 import com.tcg.generator.cards.GenericCard;
 import com.tcg.generator.layouts.ElementLayout;
 import com.tcg.generator.layouts.ElementMapping;
-import com.tcg.generator.util.ImageWriter;
 import com.text.formatted.elements.MixedMediaText;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,11 +23,11 @@ import javax.imageio.ImageIO;
 public class Card extends GenericCard {
     @Override
     public final void draw(String outputDirectory) {
-        BufferedImage bi = new BufferedImage(layout.getWidth(), layout.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        ImageWriter.drawLayer(artwork, bi);
+        BufferedImage bi = new BufferedImage(cardLayout.getWidth(), cardLayout.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        drawLayer(artwork, bi);
         
         ArrayList<MixedMediaText> mmtl;
-        for (ElementLayout element: layout.getElements()) {
+        for (ElementLayout element: cardLayout.getElements()) {
             System.out.println("Mapping element: " + element.getName());
             
             // Test to see if layer should be drawn
@@ -36,7 +35,7 @@ public class Card extends GenericCard {
                 continue;
             }
             
-            ImageWriter.drawLayer(element, bi);
+            drawLayer(element, bi);
             if (element.getMappings() != null) {
                 ArrayList<String> lines = new ArrayList<>();
                 for (Entry<String, ElementMapping> entry : element.getMappings().entrySet()) {
@@ -108,11 +107,11 @@ public class Card extends GenericCard {
                 
                 switch(element.getType()) {
                     case "text-box":
-                        mmtl = ImageWriter.splitAndFitMixedText(bi, lines, element);
-                        ImageWriter.drawMixedMediaText(bi, mmtl, element);
+                        mmtl = splitAndFitMixedText(bi, lines, element);
+                        drawMixedMediaText(bi, mmtl, element);
                         break;
                     case "table":
-                        ImageWriter.drawTableCols(bi, lines, 2, element);
+                        drawTableCols(bi, lines, 2, element);
                         break;
                     case "image":
                     case "layer":

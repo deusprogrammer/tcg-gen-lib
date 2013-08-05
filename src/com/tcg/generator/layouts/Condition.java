@@ -22,7 +22,7 @@ public class Condition {
     Condition() {}
     
     Condition(String expression) {
-        Pattern pattern = Pattern.compile("([a-zA-Z0-9]+)\\s*(==|!=|>|<|>=|<=|contains)\\s*([a-zA-Z0-9\"\']+)");
+        Pattern pattern = Pattern.compile("([a-zA-Z0-9]+)\\s*(==|!=|>|<|>=|<=|contains|in)\\s*([a-zA-Z0-9\"\']+)");
         
         Matcher matcher = pattern.matcher(expression);
         
@@ -92,6 +92,9 @@ public class Condition {
                 } else {
                     return false;
                 }
+            case "in":
+                // Not implemented yet
+                return false;
             default:
                 return false;
         }
