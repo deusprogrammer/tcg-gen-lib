@@ -22,7 +22,7 @@ public class ElementLayout {
     private Integer width, height;
     private Integer marginX, marginY;
     private Boolean wordWrap;
-    private String align;
+    private String align, vAlign;
     private CardFont font;
     private Double transparency;
     private CardLayer layer;
@@ -42,7 +42,8 @@ public class ElementLayout {
             @JsonProperty("margin-x")     Integer marginX,
             @JsonProperty("margin-y")     Integer marginY,
             @JsonProperty("word-wrap")    Boolean wordWrap,
-            @JsonProperty("align")        String align,
+            @JsonProperty("h-align")      String align,
+            @JsonProperty("v-align")      String vAlign,
             @JsonProperty("columns")      Integer columns,
             @JsonProperty("transparency") Double transparency,
             @JsonProperty("font")         CardFont font,
@@ -66,6 +67,7 @@ public class ElementLayout {
         this.marginY = marginY;
         this.wordWrap = wordWrap;
         this.align = align;
+        this.vAlign = vAlign;
         this.columns = columns;
         this.font = font;
         this.transparency = transparency;
@@ -85,6 +87,10 @@ public class ElementLayout {
         
         if (align == null) {
             this.align = "left";
+        }
+        
+        if (vAlign == null) {
+            this.vAlign = "top";
         }
         
         if (layer != null) {
@@ -154,6 +160,10 @@ public class ElementLayout {
     
     public String getAlign() {
         return align;
+    }
+    
+    public String getVAlign() {
+        return vAlign;
     }
     
     public boolean shouldDraw(LinkedHashMap<String, Object> object) {

@@ -433,26 +433,40 @@ public class GenericCard {
         FontMetrics fm = g.getFontMetrics();
         
         int index = 0;
+        int actualHeight = fm.getAscent() - fm.getDescent();
+        int lineHeight = fm.getHeight();
+        int totalHeight = lines.size() * actualHeight;
         for (String line: lines) {
-            int actualHeight = fm.getAscent() - fm.getDescent();
-            int lineHeight = fm.getHeight();
             int lineWidth = (int)fm.getStringBounds(line, g).getBounds().getWidth();
-            int startX;
+            int startX, startY;
             
             switch (elementLayout.getAlign()) {
             case "right":
-                startX = (elementLayout.getWidth() - elementLayout.getMarginX() - lineWidth);
+                startX = elementLayout.getWidth() - elementLayout.getMarginX() - lineWidth;
                 break;
             case "center":
-                startX = elementLayout.getMarginX() + (elementLayout.getWidth() - lineWidth)/2;
+                startX = (elementLayout.getWidth() - lineWidth)/2;
                 break;
             case "left":
             default:
                 startX = elementLayout.getMarginX();
                 break;
             }
+            
+            switch (elementLayout.getVAlign()) {
+            case "center":
+                startY = (elementLayout.getHeight() - totalHeight)/2;
+                break;
+            case "bottom":
+                startY = elementLayout.getHeight() - elementLayout.getMarginY() - totalHeight;
+                break;
+            case "top":
+            default:
+                startY = elementLayout.getMarginY();
+                break;
+            }
 
-            g.drawString(line, elementLayout.getX() + startX, (elementLayout.getY() + elementLayout.getMarginY() + actualHeight ) + (index * lineHeight));
+            g.drawString(line, elementLayout.getX() + startX, (elementLayout.getY() + startY + actualHeight ) + (index * lineHeight));
             
             index++;
         }
@@ -470,7 +484,7 @@ public class GenericCard {
         
         int actualHeight = fm.getAscent() - fm.getDescent();
         int lineWidth = (int)fm.getStringBounds(text, g).getBounds().getWidth();
-        int startX;
+        int startX, startY;
 
         switch (elementLayout.getAlign()) {
         case "right":
@@ -485,8 +499,21 @@ public class GenericCard {
             break;
         }
         
+        switch (elementLayout.getVAlign()) {
+        case "center":
+            startY = (elementLayout.getHeight() - actualHeight)/2;
+            break;
+        case "bottom":
+            startY = elementLayout.getHeight() - elementLayout.getMarginY() - actualHeight;
+            break;
+        case "top":
+        default:
+            startY = elementLayout.getMarginY();
+            break;
+        }
+        
         g.setColor(elementLayout.getCardFont().getColor());
-        g.drawString(text, elementLayout.getX() + startX, elementLayout.getY() + elementLayout.getMarginY() + actualHeight);
+        g.drawString(text, elementLayout.getX() + startX, elementLayout.getY() + startY + actualHeight);
     }
     
     protected void drawMixedMediaText(BufferedImage target, ArrayList<MixedMediaText> lines, ElementLayout elementLayout) {
