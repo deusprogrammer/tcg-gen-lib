@@ -82,11 +82,17 @@ public class MixedMediaText {
     }
     
     public MarkupElement popElement() {
+        if (elements.size() == 0) {
+            return null;
+        }
         return elements.remove(elements.size() - 1);
     }
     
     public MarkupElement peekElement() {
-        return elements.get(elements.size() -1);
+        if (elements.size() == 0) {
+            return null;
+        }
+        return elements.get(elements.size() - 1);
     }
     
     public String toString() {

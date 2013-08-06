@@ -20,7 +20,8 @@ public class ElementLayout {
     private String inherits;
     private Integer x, y;
     private Integer width, height;
-    private Integer margin;
+    private Integer marginX, marginY;
+    private Boolean wordWrap;
     private CardFont font;
     private Double transparency;
     private CardLayer layer;
@@ -37,7 +38,9 @@ public class ElementLayout {
             @JsonProperty("y")            Integer y,
             @JsonProperty("width")        Integer width,
             @JsonProperty("height")       Integer height,
-            @JsonProperty("margin")       Integer margin,
+            @JsonProperty("margin-x")     Integer marginX,
+            @JsonProperty("margin-y")     Integer marginY,
+            @JsonProperty("word-wrap")    Boolean wordWrap,
             @JsonProperty("columns")      Integer columns,
             @JsonProperty("transparency") Double transparency,
             @JsonProperty("font")         CardFont font,
@@ -57,13 +60,19 @@ public class ElementLayout {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.margin = margin;
+        this.marginX = marginX;
+        this.marginY = marginY;
+        this.wordWrap = wordWrap;
         this.columns = columns;
         this.font = font;
         this.transparency = transparency;
         this.mappings = mappings;
         this.layer = layer;
 
+        if (wordWrap == null) {
+            this.wordWrap = true;
+        }
+        
         if (layer != null) {
             if (this.height == null) {
                 this.height = this.layer.getHeight();
@@ -101,8 +110,12 @@ public class ElementLayout {
         return height;
     }
     
-    public Integer getMargin() {
-        return margin;
+    public Integer getMarginX() {
+        return marginX;
+    }
+    
+    public Integer getMarginY() {
+        return marginY;
     }
     
     public Integer getColumns() {
@@ -119,6 +132,10 @@ public class ElementLayout {
     
     public Condition getCondition() {
         return condition;
+    }
+    
+    public Boolean hasWordWrap() {
+        return wordWrap;
     }
     
     public boolean shouldDraw(LinkedHashMap<String, Object> object) {
@@ -182,7 +199,8 @@ public class ElementLayout {
                 "\ty:            " + y + "\n" +
                 "\twidth:        " + width + "\n" +
                 "\theight:       " + height +  "\n" +
-                "\tmargin:       " + margin + "\n" +
+                "\tmargin-x:     " + marginX + "\n" +
+                "\tmargin-y:     " + marginY + "\n" +
                 "\tcolumns:      " + columns + "\n" +
                 "\ttransparency: " + transparency + "\n" +
                 "\tfont:         " + "\n" + font;

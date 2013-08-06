@@ -7,6 +7,7 @@ package com.tcg.generator.cards;
 import com.tcg.generator.cards.reflect.Card;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tcg.generator.config.ConfigHolder;
 import com.tcg.generator.layouts.CardFont;
 import com.tcg.generator.layouts.CardLayout;
 import com.tcg.generator.layouts.ElementLayout;
@@ -19,6 +20,7 @@ import com.text.formatted.elements.MarkupElement;
 import com.text.formatted.elements.MixedMediaText;
 import com.text.formatted.elements.TextInsert;
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -99,9 +101,9 @@ public class GenericCard {
     public final GenericCard setArtwork(File artworkFile) {
         try {
             this.artwork = ImageIO.read(artworkFile);
-           System.out.println("Successfully opened: " + artworkFile);
+           System.out.println("Successfully opened: " + artworkFile.getAbsolutePath());
         } catch (IOException ex) {
-            System.out.println("Failed to open:      " + artworkFile);
+            System.out.println("Failed to open:      " + artworkFile.getAbsolutePath());
         }
         return this;
     }
@@ -130,7 +132,6 @@ public class GenericCard {
             draw(new FileOutputStream(outputFile));
         } catch (FileNotFoundException ex) {
             System.out.println("Unable to find file!");
-            return;
         }
     }
     
@@ -218,8 +219,12 @@ public class GenericCard {
                 
                 switch(element.getType()) {
                     case "text-box":
-                        mmtl = splitAndFitMixedText(bi, lines, element);
-                        drawMixedMediaText(bi, mmtl, element);
+                        if (element.hasWordWrap()) {
+                            mmtl = splitAndFitMixedText(bi, lines, element);
+                            drawMixedMediaText(bi, mmtl, element);
+                        } else {
+                            drawText(bi, lines, element);
+                        }
                         break;
                     case "table":
                         drawTableCols(bi, lines, 2, element);
@@ -278,7 +283,7 @@ public class GenericCard {
             
             int width = fm.getStringBounds(line, g).getBounds().width;
             
-            if (width > elementLayout.getWidth() - elementLayout.getMargin() * 2) {
+            if (width > elementLayout.getWidth() - elementLayout.getMarginX() * 2) {
                 lines.add(lastLine);
                 line = lastWord;
             }
@@ -320,7 +325,7 @@ public class GenericCard {
         ArrayList<MixedMediaText> lines = new ArrayList<>();
         
         MarkupElement element;
-        int maxWidth = (elementLayout.getWidth() - elementLayout.getMargin() * 2);
+        int maxWidth = (elementLayout.getWidth() - elementLayout.getMarginX() * 2);
         
         while((element = text.next()) != null) {
             if (element instanceof ImageInsert) {
@@ -339,14 +344,6 @@ public class GenericCard {
             int width = textWidth + iconWidth + formattedTextWidth;
             
             if (width >= maxWidth) {
-                System.out.println("TEXT WIDTH:     " + textWidth);
-                System.out.println("FTEXT WIDTH:    " + formattedTextWidth);
-                System.out.println("ICONS WIDTH:    " + iconWidth);
-                System.out.println("TOTAL WIDTH:    " + width);
-                System.out.println("MAX WIDTH:      " + maxWidth);
-                System.out.println("ELEMENT WIDTH:  " + elementLayout.getWidth());
-                System.out.println("ELEMENT MARGIN: " + elementLayout.getMargin());
-                
                 lastElement = line.popElement();
                 
                 if (line.peekElement() instanceof ImageInsert) {
@@ -403,8 +400,6 @@ public class GenericCard {
         Composite comp = AlphaComposite.getInstance(rule, alpha);
         g.setComposite(comp);
         
-        //g.drawImage(elementLayout.getLayer(), null, 0, 0);
-        
         // Use this when we change the way we store card layers.
         g.drawImage(elementLayout.getLayer(), null, elementLayout.getX(), elementLayout.getY());
     }
@@ -433,10 +428,10 @@ public class GenericCard {
         
         FontMetrics fm = g.getFontMetrics();
         
-        int lineHeight = fm.getHeight();
+        int actualHeight = fm.getAscent() - fm.getDescent();
         
         g.setColor(elementLayout.getCardFont().getColor());
-        g.drawString(text, elementLayout.getX() + elementLayout.getMargin(), elementLayout.getY() + elementLayout.getMargin() + lineHeight);
+        g.drawString(text, elementLayout.getX() + elementLayout.getMarginX(), elementLayout.getY() + elementLayout.getMarginY() + actualHeight);
     }
     
     protected void drawMixedMediaText(BufferedImage target, ArrayList<MixedMediaText> lines, ElementLayout elementLayout) {
@@ -449,7 +444,7 @@ public class GenericCard {
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         
         FontMetrics fm = g.getFontMetrics();
-        int actualHeight = fm.getMaxAscent();
+        int actualHeight = fm.getAscent() - fm.getDescent();
         int lineHeight = fm.getHeight();
         int index = 0;
         
@@ -458,15 +453,19 @@ public class GenericCard {
         
             int offset = 0;
             int spaceWidth = 0;
-            int textBottom = (elementLayout.getY() + elementLayout.getMargin() + lineHeight) + (index * lineHeight);
+            int textBottom = (elementLayout.getY() + elementLayout.getMarginY() + actualHeight) + (index * lineHeight);
             
             // Debugging lines
-            /*
-            g.setColor(Color.RED);
-            g.drawLine(elementLayout.getX(), textBottom, elementLayout.getWidth(), textBottom);
-            g.drawLine(elementLayout.getX(), textBottom - actualHeight, elementLayout.getWidth(), textBottom - actualHeight);
+            if (ConfigHolder.getConfig("debug") != null) {
+                g.setColor(Color.GREEN);
+                g.drawLine(elementLayout.getX(), textBottom, elementLayout.getWidth(), textBottom);
+                g.setColor(Color.BLUE);
+                g.drawLine(elementLayout.getX(), textBottom - fm.getAscent(), elementLayout.getWidth(), textBottom - fm.getAscent());
+                g.setColor(Color.RED);
+                g.drawLine(elementLayout.getX(), textBottom - (fm.getAscent() - fm.getDescent()), elementLayout.getWidth(), textBottom - (fm.getAscent() - fm.getDescent()));
+            }
+            
             g.setColor(elementLayout.getCardFont().getColor());
-            */
             
             while ((me = mmt.next()) != null) {
                 if (me instanceof TextInsert) {
@@ -474,7 +473,7 @@ public class GenericCard {
                     fm = g.getFontMetrics();
                     spaceWidth = fm.getStringBounds(" ", g).getBounds().width;
                     
-                    g.drawString(me.getText(), elementLayout.getX() + elementLayout.getMargin() + offset, textBottom);
+                    g.drawString(me.getText(), elementLayout.getX() + elementLayout.getMarginX() + offset, textBottom);
                     offset += fm.getStringBounds(me.getText(), g).getBounds().width + spaceWidth;
                 } else if (me instanceof ImageInsert) {
                     Resource r = cardLayout.getResource(me.getText());
@@ -482,7 +481,7 @@ public class GenericCard {
                     Integer diff = Math.abs(r.getHeight() - actualHeight);
                     Integer correction = (int)Math.round((double)diff/2.0);
                     Integer imageDelta = larger - correction;
-                    g.drawImage(r.getImage(), null, elementLayout.getX() + elementLayout.getMargin() + offset, (textBottom - imageDelta));
+                    g.drawImage(r.getImage(), null, elementLayout.getX() + elementLayout.getMarginX() + offset, (textBottom - imageDelta));
                     offset += r.getWidth() + spaceWidth;
                 } else if (me instanceof BoldTextInsert) {
                     CardFont cf = elementLayout.getCardFont();
@@ -492,7 +491,7 @@ public class GenericCard {
                     fm = g.getFontMetrics();
                     spaceWidth = 0;
                     
-                    g.drawString(me.getText(), elementLayout.getX() + elementLayout.getMargin() + offset, (elementLayout.getY() + elementLayout.getMargin() + lineHeight) + (index * lineHeight));
+                    g.drawString(me.getText(), elementLayout.getX() + elementLayout.getMarginX() + offset, textBottom);
                     offset += fm.getStringBounds(me.getText(), g).getBounds().width + spaceWidth;
                 } else if (me instanceof ItalicTextInsert) {
                     CardFont cf = elementLayout.getCardFont();
@@ -502,7 +501,7 @@ public class GenericCard {
                     fm = g.getFontMetrics();
                     spaceWidth = 0;
                     
-                    g.drawString(me.getText(), elementLayout.getX() + elementLayout.getMargin() + offset, (elementLayout.getY() + elementLayout.getMargin() + lineHeight) + (index * lineHeight));
+                    g.drawString(me.getText(), elementLayout.getX() + elementLayout.getMarginX() + offset, textBottom);
                     offset += fm.getStringBounds(me.getText(), g).getBounds().width + spaceWidth;
                 }
             }
@@ -523,9 +522,10 @@ public class GenericCard {
         
         int index = 0;
         for (String line: lines) {
+            int actualHeight = fm.getAscent() - fm.getDescent();
             int lineHeight = fm.getHeight();
 
-            g.drawString(line, elementLayout.getX() + elementLayout.getMargin(), (elementLayout.getY() + elementLayout.getMargin() + lineHeight) + (index * lineHeight));
+            g.drawString(line, elementLayout.getX() + elementLayout.getMarginX(), (elementLayout.getY() + elementLayout.getMarginY() + actualHeight) + (index * lineHeight));
             
             index++;
         }
@@ -558,7 +558,7 @@ public class GenericCard {
                 
                 int lineHeight = fm.getHeight();
 
-                g.drawString(cell, (elementLayout.getX() + elementLayout.getMargin()) + ((maxWidth + elementLayout.getMargin()) * col), (elementLayout.getY() + elementLayout.getMargin() + lineHeight) + (row * lineHeight));
+                g.drawString(cell, (elementLayout.getX() + elementLayout.getMarginX()) + ((maxWidth + elementLayout.getMarginX()) * col), (elementLayout.getY() + elementLayout.getMarginY() + lineHeight) + (row * lineHeight));
             }
         }
     }

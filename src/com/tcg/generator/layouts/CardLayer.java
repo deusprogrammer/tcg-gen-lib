@@ -45,8 +45,10 @@ public class CardLayer {
             try {
                 this.image = ImageIO.read(new File(ConfigHolder.getConfig("rootDirectory") + file));
             } catch (IOException ex) {
-                System.out.println("Unable to open layer!");
+                System.out.println("Unable to open: " + ConfigHolder.getConfig("rootDirectory") + file);
+                return;
             }
+            System.out.println("Successfully opened: " + ConfigHolder.getConfig("rootDirectory") + file);
         } else if (r != null && g != null && b != null) {
             this.width = width;
             this.height = height;

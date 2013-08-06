@@ -36,6 +36,18 @@ public class CardFont {
             case "white":
                 this.color = Color.white;
                 break;
+            case "red":
+                this.color = Color.red;
+                break;
+            case "green":
+                this.color = Color.yellow;
+                break;
+            case "blue":
+                this.color = Color.blue;
+                break;
+            case "yellow":
+                this.color = Color.yellow;
+                break;
         }
     }
     
