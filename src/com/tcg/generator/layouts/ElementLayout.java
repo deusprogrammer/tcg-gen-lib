@@ -22,6 +22,7 @@ public class ElementLayout {
     private Integer width, height;
     private Integer marginX, marginY;
     private Boolean wordWrap;
+    private String align;
     private CardFont font;
     private Double transparency;
     private CardLayer layer;
@@ -41,6 +42,7 @@ public class ElementLayout {
             @JsonProperty("margin-x")     Integer marginX,
             @JsonProperty("margin-y")     Integer marginY,
             @JsonProperty("word-wrap")    Boolean wordWrap,
+            @JsonProperty("align")        String align,
             @JsonProperty("columns")      Integer columns,
             @JsonProperty("transparency") Double transparency,
             @JsonProperty("font")         CardFont font,
@@ -63,14 +65,26 @@ public class ElementLayout {
         this.marginX = marginX;
         this.marginY = marginY;
         this.wordWrap = wordWrap;
+        this.align = align;
         this.columns = columns;
         this.font = font;
         this.transparency = transparency;
         this.mappings = mappings;
         this.layer = layer;
+        
+        if (marginX == null) {
+            this.marginX = 0;
+        }
+        if (marginY == null) {
+            this.marginY = 0;
+        }
 
         if (wordWrap == null) {
             this.wordWrap = true;
+        }
+        
+        if (align == null) {
+            this.align = "left";
         }
         
         if (layer != null) {
@@ -138,6 +152,10 @@ public class ElementLayout {
         return wordWrap;
     }
     
+    public String getAlign() {
+        return align;
+    }
+    
     public boolean shouldDraw(LinkedHashMap<String, Object> object) {
         if (condition != null) {
             return condition.test(object);
@@ -165,6 +183,13 @@ public class ElementLayout {
             case "bold":
                 fontWeight = Font.BOLD;
                 break;
+            case "italic":
+                fontWeight = Font.ITALIC;
+                break;
+            case "bold-italic":
+                fontWeight = Font.BOLD | Font.ITALIC;
+                break;
+            default:
             case "normal":
                 fontWeight = Font.PLAIN;
                 break;

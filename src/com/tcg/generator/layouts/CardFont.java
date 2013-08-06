@@ -16,39 +16,19 @@ public class CardFont {
     private String family;
     private String weight;
     private int size;
-    private Color color;
+    private CardColor color;
     
     @JsonCreator
     public CardFont(
             @JsonProperty("family") String family,
             @JsonProperty("weight") String weight,
             @JsonProperty("size")   int size,
-            @JsonProperty("color")  String color
+            @JsonProperty("color")  CardColor color
             ) {
         this.family = family;
         this.weight = weight;
         this.size = size;
-        
-        switch(color) {
-            case "black":
-                this.color = Color.black;
-                break;
-            case "white":
-                this.color = Color.white;
-                break;
-            case "red":
-                this.color = Color.red;
-                break;
-            case "green":
-                this.color = Color.yellow;
-                break;
-            case "blue":
-                this.color = Color.blue;
-                break;
-            case "yellow":
-                this.color = Color.yellow;
-                break;
-        }
+        this.color = color;
     }
     
     public String getFamily() {
@@ -64,7 +44,7 @@ public class CardFont {
     }
     
     public Color getColor() {
-        return color;
+        return color.getColor();
     }
     
     public String toString() {

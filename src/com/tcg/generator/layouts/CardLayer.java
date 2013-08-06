@@ -7,7 +7,6 @@ package com.tcg.generator.layouts;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tcg.generator.config.ConfigHolder;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,7 +20,7 @@ import javax.imageio.ImageIO;
 public class CardLayer {
     protected String type;
     protected String file;
-    protected Integer r, g, b;
+    protected CardColor color;
     protected Integer width, height;
     protected BufferedImage image;
     
@@ -29,17 +28,13 @@ public class CardLayer {
     public CardLayer(
             @JsonProperty("type")   String type,
             @JsonProperty("file")   String file,
-            @JsonProperty("r")      Integer r,
-            @JsonProperty("g")      Integer g,
-            @JsonProperty("b")      Integer b,
+            @JsonProperty("color")  CardColor color,
             @JsonProperty("width")  Integer width,
             @JsonProperty("height") Integer height
             ) {
         this.type = type;
         this.file = file;
-        this.r = r;
-        this.g = g;
-        this.b = b;
+        this.color = color;
         
         if (file != null) {
             try {
@@ -49,13 +44,13 @@ public class CardLayer {
                 return;
             }
             System.out.println("Successfully opened: " + ConfigHolder.getConfig("rootDirectory") + file);
-        } else if (r != null && g != null && b != null) {
+        } else if (color != null) {
             this.width = width;
             this.height = height;
             this.image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
             
             Graphics graphics = this.image.getGraphics();
-            graphics.setColor(new Color(r, g, b));
+            graphics.setColor(color.getColor());
             graphics.fillRect(0, 0, this.width, this.height);
         }
     }

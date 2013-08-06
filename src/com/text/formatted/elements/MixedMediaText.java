@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class MixedMediaText {
     protected ArrayList<MarkupElement> elements = new ArrayList<>();
     protected int iter = 0;
+    protected int width = 0;
     
     public MixedMediaText() {}
     
@@ -82,17 +83,25 @@ public class MixedMediaText {
     }
     
     public MarkupElement popElement() {
-        if (elements.size() == 0) {
+        if (elements.isEmpty()) {
             return null;
         }
         return elements.remove(elements.size() - 1);
     }
     
     public MarkupElement peekElement() {
-        if (elements.size() == 0) {
+        if (elements.isEmpty()) {
             return null;
         }
         return elements.get(elements.size() - 1);
+    }
+    
+    public int getWidth() {
+        return this.width;
+    }
+    
+    public void setWidth(int width) {
+        this.width = width;
     }
     
     public String toString() {

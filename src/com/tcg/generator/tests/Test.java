@@ -25,7 +25,8 @@ public class Test {
                     "\"trigger\": \"heal\"," +
                     "\"shield\": 10000," +
                     "\"power\": 10000," +
-                    "\"clan\": \"green\"," +
+                    "\"clan\": \"Equestria\"," +
+                    "\"race\": \"Pony\"," +
                     "\"effects\": [" +
                         "\"[icon:cont] If you have a unit named [bold:Twilight Sparkle] on [icon:vanguard], then [bold:Fluttershy] gains [icon:sword]+5000 until end of turn.\"" +
                     "]" +

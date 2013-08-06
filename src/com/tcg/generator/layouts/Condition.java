@@ -22,7 +22,7 @@ public class Condition {
     Condition() {}
     
     Condition(String expression) {
-        Pattern pattern = Pattern.compile("([a-zA-Z0-9]+)\\s*(==|!=|>|<|>=|<=|contains|in)\\s*([a-zA-Z0-9\"\']+)");
+        Pattern pattern = Pattern.compile("([a-zA-Z0-9]+)\\s*(==|!=|>|<|>=|<=|contains|in)\\s*([a-zA-Z0-9\"\',\\s]+)");
         
         Matcher matcher = pattern.matcher(expression);
         
@@ -83,17 +83,25 @@ public class Condition {
             case ">":
                 return (Integer)object > Integer.parseInt(value);
             case "contains":
-                if (object.getClass().getSimpleName() == "ArrayList") {
+                switch (object.getClass().getSimpleName()) {
+                case "ArrayList":
                     ArrayList list = (ArrayList)object;
                     return list.contains(value);
-                } else if (object.getClass().getSimpleName().equals("String")) {
+                case "String":
                     String string = (String)object;
                     return string.contains(value.toString());
-                } else {
+                default:
                     return false;
                 }
             case "in":
-                // Not implemented yet
+                String string = (String)object;
+                String[] list = value.split(",");
+                for (String element : list) {
+                    element = element.trim();
+                    if (string.equals(element)) {
+                        return true;
+                    }
+                }
                 return false;
             default:
                 return false;
