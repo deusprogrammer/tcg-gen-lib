@@ -534,7 +534,7 @@ public class GenericCard {
             MarkupElement me;
         
             int offset = 0;
-            int spaceWidth = 0;
+            int spaceWidth = fm.getStringBounds(" ", g).getBounds().width;
             int textBottom = (elementLayout.getY() + elementLayout.getMarginY() + actualHeight) + (index * lineHeight);
             
             // Debugging lines
@@ -583,10 +583,8 @@ public class GenericCard {
                 } else if (me instanceof BoldTextInsert) {
                     CardFont cf = elementLayout.getCardFont();
                     Font f = new Font(cf.getFamily(), Font.BOLD, cf.getSize());
-                    
                     g.setFont(f);
                     fm = g.getFontMetrics();
-                    spaceWidth = 0;
                     
                     g.drawString(me.getText(), elementLayout.getX() + startX + offset, textBottom);
                     offset += fm.getStringBounds(me.getText(), g).getBounds().width + spaceWidth;
@@ -596,7 +594,6 @@ public class GenericCard {
                     
                     g.setFont(f);
                     fm = g.getFontMetrics();
-                    spaceWidth = 0;
                     
                     g.drawString(me.getText(), elementLayout.getX() + startX + offset, textBottom);
                     offset += fm.getStringBounds(me.getText(), g).getBounds().width + spaceWidth;
